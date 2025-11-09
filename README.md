@@ -86,6 +86,7 @@ require("xghost").setup({
   italic_comments = true,
   italic_keywords = false,
   bold_keywords = true,
+  font_style = "bold",          -- "bold", "semi_bold", or "regular"
   hide_inactive_statusline = false,
   darker_sidebar = true,        -- darker NvimTree / Telescope backgrounds
   overrides = {},               -- function or table with highlight overrides
@@ -110,6 +111,7 @@ require("xghost").setup({
 | `style`                                               | Palette to load (`default`, `warm`). Unsupported styles fall back to `default` with a warning. |
 | `transparent`                                         | Removes window backgrounds so the terminal or GUI background shows through.                    |
 | `italic_comments`, `italic_keywords`, `bold_keywords` | Toggle common stylistic emphases.                                                              |
+| `font_style`                                          | Controls bold usage: `"bold"` (default, keywords bold), `"semi_bold"` (keywords regular, UI bold for macOS feel), `"regular"` (minimal bold). |
 | `hide_inactive_statusline`                            | Dim status lines in unfocused windows.                                                         |
 | `darker_sidebar`                                      | Use sidebar-specific background for file explorers, Telescope, etc.                            |
 | `overrides`                                           | Table (or function returning a table) of highlight definitions merged last.                    |
@@ -118,6 +120,49 @@ require("xghost").setup({
 ---
 
 ## Recipes
+
+**macOS-style font rendering**
+
+For the best macOS aesthetic, use `font_style = "semi_bold"` to remove bold from keywords while keeping UI elements bold, matching the lighter weight typical of macOS apps:
+
+```lua
+require("xghost").setup({
+  font_style = "semi_bold",  -- Lighter weight for code, bold only for UI
+})
+```
+
+**Terminal font configuration for macOS fonts**
+
+Configure your terminal to map Neovim's bold to a lighter weight for optimal macOS feel:
+
+**Ghostty** (`~/.config/ghostty/config`):
+```
+font-family = SF Mono
+font-size = 14
+font-style-bold = Semibold
+```
+
+**Alacritty** (`~/.config/alacritty/alacritty.toml`):
+```toml
+[font]
+normal = { family = "SF Mono", style = "Regular" }
+bold = { family = "SF Mono", style = "Semibold" }
+size = 14.0
+```
+
+**WezTerm** (`~/.config/wezterm/wezterm.lua`):
+```lua
+config.font = wezterm.font('SF Mono', { weight = 'Regular' })
+config.font_rules = {
+  { intensity = 'Bold', font = wezterm.font('SF Mono', { weight = 'Semibold' }) }
+}
+```
+
+**Neovide**:
+```lua
+vim.o.guifont = "SF Mono:h14"
+vim.g.neovide_font_weight = 500  -- Medium weight
+```
 
 **Transparent editing surface**
 

@@ -4,15 +4,29 @@ local M = {}
 function M.get(c, config)
 	local hl = {}
 
+	-- Helper to determine bold based on font_style
+	local function use_bold_for(element_type)
+		if config.font_style == "bold" then
+			return true
+		elseif config.font_style == "semi_bold" then
+			-- Only bold for UI elements, not keywords
+			return element_type == "ui" or element_type == "emphasis"
+		elseif config.font_style == "regular" then
+			-- Only bold for critical emphasis
+			return element_type == "emphasis"
+		end
+		return true -- default to bold if unknown font_style
+	end
+
 	-- Editor
 	hl.Normal = { fg = c.fg, bg = config.transparent and c.none or c.bg }
 	hl.NormalFloat = { fg = c.fg, bg = c.bg_float }
 	hl.FloatBorder = { fg = c.border_highlight, bg = c.bg_float }
-	hl.FloatTitle = { fg = c.blue, bg = c.bg_float, bold = true }
+	hl.FloatTitle = { fg = c.blue, bg = c.bg_float, bold = use_bold_for("ui") }
 
 	-- Line numbers and columns (spec section 6)
 	hl.LineNr = { fg = c.warm } -- Warm accent for line numbers
-	hl.CursorLineNr = { fg = c.warm_bright, bold = true } -- Brighter warm for current line
+	hl.CursorLineNr = { fg = c.warm_bright, bold = use_bold_for("ui") } -- Brighter warm for current line
 	hl.CursorLine = { bg = c.bg_highlight }
 	hl.CursorColumn = { bg = c.bg_highlight }
 	hl.ColorColumn = { bg = "#3A3C40" } -- From spec
@@ -47,14 +61,14 @@ function M.get(c, config)
 	hl.TabLineSel = {
 		fg = c.tab_active_fg,
 		bg = c.tab_active_bg,
-		bold = true,
+		bold = use_bold_for("ui"),
 		underline = true,
 		sp = c.tab_active_border,
 	}
 
 	-- Messages and command line
 	hl.MsgArea = { fg = c.fg }
-	hl.ModeMsg = { fg = c.fg_dark, bold = true }
+	hl.ModeMsg = { fg = c.fg_dark, bold = use_bold_for("ui") }
 	hl.MoreMsg = { fg = c.green }
 	hl.WarningMsg = { fg = c.warning }
 	hl.ErrorMsg = { fg = c.error }
@@ -62,7 +76,7 @@ function M.get(c, config)
 
 	-- Popup menu (completion)
 	hl.Pmenu = { fg = "#E8EBEC", bg = c.bg_pmenu }
-	hl.PmenuSel = { fg = c.fg, bg = c.bg_pmenu_sel, bold = true, underline = true, sp = c.cyan }
+	hl.PmenuSel = { fg = c.fg, bg = c.bg_pmenu_sel, bold = use_bold_for("ui"), underline = true, sp = c.cyan }
 	hl.PmenuSbar = { bg = c.scrollbar_track }
 	hl.PmenuThumb = { bg = c.scrollbar_thumb }
 	hl.WildMenu = { fg = c.fg, bg = c.bg_visual }
@@ -103,8 +117,8 @@ function M.get(c, config)
 	hl.MatchParen = { fg = c.cyan, underline = true }
 
 	-- Titles and special text
-	hl.Title = { fg = c.blue, bold = true }
-	hl.Bold = { bold = true }
+	hl.Title = { fg = c.blue, bold = use_bold_for("ui") }
+	hl.Bold = { bold = true } -- Semantic bold, always bold
 	hl.Italic = { italic = true }
 	hl.Underlined = { underline = true }
 
@@ -124,12 +138,12 @@ function M.get(c, config)
 	hl.Function = { fg = c.blue } -- accent.blue for functions
 
 	-- Statements & Keywords (semibold per spec)
-	hl.Statement = { fg = c.purple, bold = true } -- accent.purple, semibold
-	hl.Conditional = { fg = c.purple, bold = true } -- semibold
-	hl.Repeat = { fg = c.purple, bold = true } -- semibold
+	hl.Statement = { fg = c.purple, bold = use_bold_for("keyword") } -- accent.purple, semibold
+	hl.Conditional = { fg = c.purple, bold = use_bold_for("keyword") } -- semibold
+	hl.Repeat = { fg = c.purple, bold = use_bold_for("keyword") } -- semibold
 	hl.Label = { fg = c.purple }
 	hl.Operator = { fg = c.operator } -- #C0C6C4 subtle
-	hl.Keyword = { fg = c.purple, bold = true } -- semibold (not italic)
+	hl.Keyword = { fg = c.purple, bold = use_bold_for("keyword") } -- semibold (not italic)
 	hl.Exception = { fg = c.red }
 
 	-- PreProc
@@ -154,8 +168,8 @@ function M.get(c, config)
 	hl.Debug = { fg = c.red }
 
 	-- Errors and Todos (spec section 5)
-	hl.Error = { fg = c.error, bold = true } -- Bold per spec
-	hl.Todo = { fg = c.yellow, bg = "#3B3426", bold = true } -- Yellow on dark bg
+	hl.Error = { fg = c.error, bold = use_bold_for("emphasis") } -- Bold per spec
+	hl.Todo = { fg = c.yellow, bg = "#3B3426", bold = use_bold_for("emphasis") } -- Yellow on dark bg
 
 	return hl
 end

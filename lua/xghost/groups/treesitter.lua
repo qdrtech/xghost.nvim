@@ -4,6 +4,18 @@ local M = {}
 function M.get(c, config)
 	local hl = {}
 
+	-- Helper to determine bold based on font_style
+	local function use_bold_for(element_type)
+		if config.font_style == "bold" then
+			return true
+		elseif config.font_style == "semi_bold" then
+			return element_type == "ui" or element_type == "emphasis"
+		elseif config.font_style == "regular" then
+			return element_type == "emphasis"
+		end
+		return true
+	end
+
 	-- Treesitter syntax groups
 	-- Reference: https://github.com/nvim-treesitter/nvim-treesitter/blob/master/CONTRIBUTING.md
 
@@ -12,8 +24,8 @@ function M.get(c, config)
 	hl["@comment.documentation"] = { fg = c.subtle, italic = config.italic_comments }
 	hl["@comment.error"] = { fg = c.error }
 	hl["@comment.warning"] = { fg = c.warning }
-	hl["@comment.todo"] = { fg = c.bg, bg = c.yellow, bold = true }
-	hl["@comment.note"] = { fg = c.bg, bg = c.blue, bold = true }
+	hl["@comment.todo"] = { fg = c.bg, bg = c.yellow, bold = use_bold_for("emphasis") }
+	hl["@comment.note"] = { fg = c.bg, bg = c.blue, bold = use_bold_for("emphasis") }
 
 	-- Constants
 	hl["@constant"] = { fg = c.orange_muted }
