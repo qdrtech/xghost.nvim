@@ -1,96 +1,99 @@
 -- Default xghost color palette
--- "Warm" theme - calm, low-contrast dark UI with warm accents
--- Based on warm-theme-design-spec.md
+-- Vibrant midnight palette with cooler accents (new default style)
 local M = {}
 
 -- Base colors
 M.none = "NONE"
-M.bg = "#2C2D30" -- Main editor background (bg.editor)
-M.bg_darker = "#212325" -- Darker for statusline
-M.bg_sidebar = "#242628" -- Sidebar, signcolumn, gutters
-M.bg_float = "#2E3033" -- Popups, LSP hover, completion menu
-M.bg_highlight = "#323438" -- Cursor line highlight
-M.bg_visual = "#3A3D41" -- Visual selection
-M.bg_search = "#373C42" -- Search highlight background
-M.bg_selection = "#34373B" -- Used for sidebar selections and virtual text patches
-M.bg_pmenu = "#2F3236" -- Completion menu background
-M.bg_pmenu_sel = "#3A3E43" -- Completion menu selection row
-M.bg_statusline_inactive = "#2A2C2E" -- Inactive statusline/tabline bg
-M.tab_active_bg = "#303337"
-M.tab_inactive_bg = "#26282A"
+M.bg = "#1E1F26" -- Main editor background
+M.bg_darker = "#16171D" -- Darker for statusline
+M.bg_sidebar = "#191A22" -- Sidebar, signcolumn, gutters
+M.bg_float = "#20212A" -- Popups, LSP hover, completion menu
+M.bg_highlight = "#2A2C37" -- Cursor line highlight
+M.bg_visual = "#343849" -- Visual selection
+M.bg_search = "#3C3F55" -- Search highlight background
+M.bg_selection = "#2B2E3F" -- Sidebar selections, virtual text patches
+M.bg_pmenu = "#242635" -- Completion menu background
+M.bg_pmenu_sel = "#343652" -- Completion menu selection row
+M.bg_statusline_inactive = "#1A1B24" -- Inactive statusline/tabline bg
+M.tab_active_bg = "#2D3041"
+M.tab_inactive_bg = "#1F202A"
+M.sidebar_text = "#D9DBF2"
+M.sidebar_muted = "#9AA1BF"
+M.folder_closed = "#F7C59F"
 
 -- Foreground colors
-M.fg = "#FAFAFB" -- Primary text (fg.default)
-M.fg_dim = "#9CA9A5" -- Comments, guides, muted UI
-M.fg_ui = "#BFC7C4" -- Gutter text, inactive elements
-M.fg_dark = "#9CA9A5" -- Alias for dim
-M.fg_darker = "#848E8B" -- Even dimmer
-M.fg_ghost = "#5A5F64" -- Very dim/ghosted text
-M.tab_active_fg = "#EAECEE"
-M.tab_inactive_fg = "#A9B2B0"
-M.tab_active_border = "#E19C60"
-M.clock_text = "#C9D0CE" -- Statusline clock chip text
+M.fg = "#F4F4F8" -- Primary text
+M.fg_dim = "#9FA6C1" -- Comments, guides, muted UI
+M.fg_ui = "#B3BAD5" -- Gutter text, inactive elements
+M.fg_dark = "#9FA6C1"
+M.fg_darker = "#7B8099"
+M.fg_ghost = "#5A5F77"
+M.tab_active_fg = "#E8ECFF"
+M.tab_inactive_fg = "#9DA3BE"
+M.tab_active_border = "#63E6BE"
+M.clock_text = "#C7CCE0"
 
 -- Border and UI elements
-M.border = "#3A3C3F" -- Subtle borders, splits
-M.border_highlight = "#3E4145" -- Highlighted borders
-M.scrollbar_track = "#3B3E42"
-M.scrollbar_thumb = "#5A5F64"
-M.indent_guide = "#44474B"
+M.border = "#2F3140"
+M.border_highlight = "#3C3F52"
+M.scrollbar_track = "#2B2D3A"
+M.scrollbar_thumb = "#4A4E63"
+M.indent_guide = "#3A3D50"
 
 -- Comments
-M.comment = "#9CA9A5" -- fg.dim - muted gray/teal
-M.subtle = "#848E8B" -- Even more subtle
+M.comment = "#9FA6C1"
+M.subtle = "#7B8099"
 
--- Warm accent (primary UI accent)
-M.warm = "#E19C60" -- Line numbers, titles, folder highlights
-M.warm_bright = "#F2BF8A" -- Brighter warm for current line number
+-- Warm accent (still used for numbers/titles)
+M.warm = "#F5A97F"
+M.warm_bright = "#FFD8A8"
 
 -- Accent colors (syntax)
-M.cyan = "#47A8D4" -- Identifiers, links, info (accent.cyan)
-M.blue = "#61AFEF" -- Functions, methods (accent.blue)
-M.purple = "#C678DD" -- Keywords, types (accent.purple)
-M.magenta = "#C678DD" -- Alias for purple
-M.green = "#7AC17A" -- Git added, success (accent.green)
-M.yellow = "#E5C07B" -- Warnings, constants (accent.yellow)
-M.orange = "#D19A66" -- Numbers, enums (accent.orange)
-M.red = "#E06C75" -- Errors, deletions (accent.red)
-M.white = "#FAFAFB" -- Pure white (same as fg)
+M.cyan = "#7DCFFF"
+M.blue = "#82AAFF"
+M.purple = "#C099FF"
+M.magenta = "#C099FF"
+M.green = "#A8E07C"
+M.yellow = "#FFE08A"
+M.orange = "#F2B482"
+M.red = "#FF6B81"
+M.white = "#F4F4F8"
 
 -- Special syntax colors
-M.string = "#A0D9AA" -- Soft green for strings (from spec)
-M.operator = "#C0C6C4" -- Subtle for operators
-M.special = "#D7DEE0" -- For special characters
+M.string = "#9FE8C6"
+M.operator = "#C0C4DD"
+M.special = "#E0E3FF"
 
 -- Muted variants (for compatibility)
 M.blue_muted = M.blue
 M.cyan_muted = M.cyan
-M.green_muted = M.string -- Strings use soft green
+M.green_muted = M.green
 M.yellow_muted = M.yellow
 M.orange_muted = M.orange
 M.red_muted = M.red
 M.magenta_muted = M.purple
 
--- Git colors (using macOS system colors)
-M.git_add = M.green
-M.git_change = M.blue
-M.git_delete = M.red
-M.git_text = M.cyan
+-- Git colors
+M.git_add = "#81D18B"
+M.git_change = "#73B9FF"
+M.git_delete = "#FF7A93"
+M.git_text = "#7DCFFF"
+M.git_untracked = "#A8CDB2"
 
 -- Diagnostic colors
 M.error = M.red
 M.warning = M.yellow
 M.info = M.blue
 M.hint = M.cyan
-M.virtual_text_bg = "#34373B"
+M.virtual_text_bg = "#2A2D3C"
 
--- Diff colors (from spec section 10)
-M.diff_add = "#233026" -- Dark green background
-M.diff_add_fg = "#B9E0B7" -- Light green text
-M.diff_delete = "#3A2627" -- Dark red background
-M.diff_delete_fg = "#F2B5B9" -- Light red text
-M.diff_change = "#24303A" -- Dark blue background
-M.diff_change_fg = "#BFD8F2" -- Light blue text
-M.diff_text = "#24303A" -- Highlighted change (same as change)
+-- Diff colors
+M.diff_add = "#22352D"
+M.diff_add_fg = "#B4F2C5"
+M.diff_delete = "#3B262B"
+M.diff_delete_fg = "#FFB2C0"
+M.diff_change = "#232F40"
+M.diff_change_fg = "#B7D8FF"
+M.diff_text = "#2C3C52"
 
 return M

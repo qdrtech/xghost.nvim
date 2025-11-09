@@ -4,10 +4,10 @@ local M = {}
 -- Available color palettes
 local palettes = {
 	default = "xghost.colors.default",
+	warm = "xghost.colors.warm",
 	-- Future styles (commented out for now):
 	-- dark = "xghost.colors.dark",
 	-- light = "xghost.colors.light",
-	-- warm = "xghost.colors.warm",
 }
 
 -- Load color palette based on style

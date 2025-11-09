@@ -1,21 +1,27 @@
+<a name="top"></a>
+
 # xghost.nvim
 
-A vibrant, warm Neovim colorscheme with rich syntax highlighting. Beautiful colors that are easy on the eyes while maintaining excellent contrast and readability.
+Warm, modern Neovim colors inspired by macOS system palettes. xghost delivers punchy accents, soft neutrals, and carefully tuned UI surfaces so long sessions stay easy on the eyes without sacrificing contrast.
 
-## Features
+## Highlights
 
-- **Multiple Styles**: Currently ships with `default` (vibrant/warm), with additional variants coming soon
-- **Rich Colors**: Vibrant syntax highlighting with carefully chosen colors for optimal readability
-- **Plugin Support**: First-class support for popular plugins
-  - TreeSitter (enhanced syntax highlighting)
-  - LSP (diagnostics, references, inlay hints)
-  - Telescope (fuzzy finder)
-  - GitSigns/vim-gitgutter (git integration)
-  - NvimTree/NeoTree (file explorers)
-  - Bufferline, Lualine, and more
-- **Customizable**: Extensive configuration options
-- **Performance**: Optimized for fast loading
-- **Clean Codebase**: Modular architecture makes it easy to extend
+- **Cohesive palettes** – `default` (warm/neutral) and `warm` (sunset) palettes are hand-designed from the same spec, with additional variants on the roadmap.
+- **Mac-first feel** – Status lines, popups, tabs, and diagnostics mimic macOS tooling so Neovim looks at home on Aqua desktops.
+- **Plugin coverage out of the box** – Treesitter, built-in LSP, Telescope, Git integrations, file explorers, Bufferline, Lualine, Snacks, Oil, indent guides, WhichKey, Notify, and more.
+- **Smart ergonomics** – Subtle search highlights, legible diff colors, virtual text backgrounds, and configurable transparency keep busy UIs readable.
+- **Tweak-friendly** – Toggle italics/bold, sidebar contrast, transparent windows, or override any highlight group in code.
+- **Lightweight implementation** – Pure Lua highlight definitions; no runtime dependencies; loads instantly during startup.
+
+---
+
+## Requirements
+
+- Neovim **0.9+** (uses `vim.api.nvim_set_hl` and modern highlight groups).
+- Terminal with true-color (`termguicolors`) support.
+- Plugin manager of your choice (`lazy.nvim`, `packer.nvim`, `vim-plug`, etc.).
+
+---
 
 ## Installation
 
@@ -24,13 +30,13 @@ A vibrant, warm Neovim colorscheme with rich syntax highlighting. Beautiful colo
 ```lua
 {
   "qdrtech/xghost.nvim",
-  lazy = false,
-  priority = 1000,
-  config = function()
-    require("xghost").setup({
-      -- your configuration here (optional)
-    })
-    vim.cmd([[colorscheme xghost]])
+  priority = 1000,     -- make sure it's applied before other UI plugins
+  opts = {
+    -- configuration table (see below)
+  },
+  config = function(_, opts)
+    require("xghost").setup(opts)
+    vim.cmd.colorscheme("xghost")
   end,
 }
 ```
@@ -38,15 +44,13 @@ A vibrant, warm Neovim colorscheme with rich syntax highlighting. Beautiful colo
 ### packer.nvim
 
 ```lua
-use {
+use({
   "qdrtech/xghost.nvim",
   config = function()
-    require("xghost").setup({
-      -- your configuration here (optional)
-    })
-    vim.cmd([[colorscheme xghost]])
-  end
-}
+    require("xghost").setup()
+    vim.cmd.colorscheme("xghost")
+  end,
+})
 ```
 
 ### vim-plug
@@ -54,38 +58,37 @@ use {
 ```vim
 Plug 'qdrtech/xghost.nvim'
 
-" Then in your init.vim or init.lua:
 lua << EOF
 require("xghost").setup()
-vim.cmd([[colorscheme xghost]])
+vim.cmd.colorscheme("xghost")
 EOF
 ```
 
-## Configuration
+---
 
-### Default Configuration
+## Quick Start
+
+```lua
+require("xghost").setup()  -- accept sane defaults
+vim.cmd.colorscheme("xghost")
+```
+
+`setup()` automatically loads the theme, so calling `vim.cmd.colorscheme("xghost")` afterwards is optional but keeps the intent explicit.
+
+---
+
+## Configuration Reference
 
 ```lua
 require("xghost").setup({
-  -- Theme style: "default", "dark", "light", "warm" (more coming soon)
-  style = "default",
-
-  -- Enable/disable transparent background
-  transparent = false,
-
-  -- Style options
+  style = "default",            -- or "warm"
+  transparent = false,          -- keep background or inherit terminal
   italic_comments = true,
   italic_keywords = false,
   bold_keywords = true,
-
-  -- UI options
   hide_inactive_statusline = false,
-  darker_sidebar = true,
-
-  -- Override specific highlight groups
-  overrides = {},
-
-  -- Plugin integrations (all enabled by default)
+  darker_sidebar = true,        -- darker NvimTree / Telescope backgrounds
+  overrides = {},               -- function or table with highlight overrides
   plugins = {
     treesitter = true,
     lsp = true,
@@ -95,36 +98,59 @@ require("xghost").setup({
     neo_tree = true,
     bufferline = true,
     lualine = true,
+    snacks = true,
+    oil = true,
     indent_blankline = true,
   },
 })
 ```
 
-### Example Configurations
+| Option                                                | Description                                                                                    |
+| ----------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `style`                                               | Palette to load (`default`, `warm`). Unsupported styles fall back to `default` with a warning. |
+| `transparent`                                         | Removes window backgrounds so the terminal or GUI background shows through.                    |
+| `italic_comments`, `italic_keywords`, `bold_keywords` | Toggle common stylistic emphases.                                                              |
+| `hide_inactive_statusline`                            | Dim status lines in unfocused windows.                                                         |
+| `darker_sidebar`                                      | Use sidebar-specific background for file explorers, Telescope, etc.                            |
+| `overrides`                                           | Table (or function returning a table) of highlight definitions merged last.                    |
+| `plugins`                                             | Fine-grained switches for each integration module (disable if you prefer plugin defaults).     |
 
-#### Transparent Background
+---
+
+## Recipes
+
+**Transparent editing surface**
 
 ```lua
 require("xghost").setup({
   transparent = true,
-})
-```
-
-#### Custom Overrides
-
-```lua
-require("xghost").setup({
   overrides = {
-    -- Make comments more visible
-    Comment = { fg = "#8e8e93", italic = true },
-
-    -- Custom function color
-    ["@function"] = { fg = "#0a84ff", bold = true },
+    NormalFloat = { bg = "none" },
+    FloatBorder = { bg = "none" },
   },
 })
 ```
 
-#### Minimal Plugin Support
+**Switch palette on the fly**
+
+```lua
+local xghost = require("xghost")
+xghost.set_style("warm")
+```
+
+**Targeted highlight overrides**
+
+```lua
+require("xghost").setup({
+  overrides = {
+    Comment = { fg = "#8E8E93", italic = true },
+    ["@function.call"] = { fg = "#0A84FF", bold = true },
+    LspInlayHint = { fg = "#B0B3BD", bg = "#2A2C31" },
+  },
+})
+```
+
+**Minimal plugin footprint**
 
 ```lua
 require("xghost").setup({
@@ -137,102 +163,96 @@ require("xghost").setup({
     neo_tree = false,
     bufferline = false,
     lualine = false,
+    snacks = false,
+    oil = false,
     indent_blankline = false,
   },
 })
 ```
 
-## Usage
+---
 
-### Basic Usage
-
-```lua
--- In your init.lua or init.vim
-vim.cmd([[colorscheme xghost]])
-```
-
-### Switch Styles at Runtime
+## Runtime Helpers
 
 ```lua
--- Change to a different style (when available)
-require("xghost").set_style("dark")
-require("xghost").set_style("light")
-require("xghost").set_style("warm")
+local xghost = require("xghost")
+
+local available = xghost.get_styles()  -- { "default", "warm" }
+local current = xghost.get_colors()    -- table with fg/bg/accent keys
+xghost.set_style("default")            -- re-applies highlights immediately
 ```
 
-### Get Available Styles
+These helpers are handy for keymaps, statusline components, or dynamic daylight/night toggles.
 
-```lua
-local styles = require("xghost").get_styles()
-print(vim.inspect(styles))
-```
+---
 
-### Get Current Colors
+## Plugin Integrations
 
-```lua
-local colors = require("xghost").get_colors()
--- Use colors in your own config
-print(colors.blue) -- #61afef
-```
+- **Treesitter** – Dedicated capture groups for function calls, fields, text objects, injected languages, etc.
+- **Neovim LSP** – Diagnostics, inlay hints, code lens, signature help, references, floating windows, and sign columns.
+- **Git tooling** – GitSigns, `diffview`, sign columns, diff/merge backgrounds.
+- **Navigation** – Telescope, NvimTree, Neo-tree, Oil, Snacks (dashboard/pickers), Bufferline, Lualine.
+- **UI polish** – WhichKey, Notify, indent-blankline/Ibl, `MatchParen`, pop-up menus, split separators, cursor line, tabs.
+
+Everything is opt-in/out through the `plugins` table, so you can disable sections you do not use.
+
+---
 
 ## Color Palette (Default Style)
 
-The default style features vibrant, warm colors with excellent contrast.
+The default palette (`lua/xghost/colors/default.lua`) pairs cool neutrals with a warm accent.
 
-### Base Colors
+### Base surfaces
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Background | `#282c34` | Editor background |
-| Foreground | `#abb2bf` | Primary text |
-| Comment | `#5c6370` | Comments |
-| Selection | `#3e4451` | Visual selection |
+| Element | Hex | Usage |
+| --- | --- | --- |
+| `bg` | `#1E1F26` | Main editor background |
+| `bg_sidebar` | `#191A22` | Sidebars, sign columns, gutters |
+| `bg_visual` | `#343849` | Visual selection / block highlight |
+| `bg_pmenu_sel` | `#343652` | Completion or popup selection rows |
+| `fg` | `#F4F4F8` | Primary text |
+| `fg_dim` | `#9FA6C1` | Comments, guides, muted UI |
+| `border` | `#2F3140` | Window separators, floating borders |
 
-### Syntax Colors
+### Accent & syntax
 
-| Color | Hex | Usage |
-|-------|-----|-------|
-| Blue | `#61afef` | Functions, methods |
-| Cyan | `#56b6c2` | Special strings, escape sequences |
-| Green | `#98c379` | Strings, success, git additions |
-| Yellow | `#e5c07b` | Classes, types, warnings |
-| Orange | `#d19a66` | Numbers, constants |
-| Red | `#e06c75` | Errors, git deletions |
-| Magenta | `#c678dd` | Keywords, control flow |
+| Color | Hex | Typical usage |
+| --- | --- | --- |
+| Warm accent | `#F5A97F` | Line numbers, tabs, titles |
+| Blue | `#82AAFF` | Functions, call signatures |
+| Cyan | `#7DCFFF` | Identifiers, special strings |
+| Purple | `#C099FF` | Keywords, flow control |
+| Green | `#A8E07C` | Strings, success messages |
+| Yellow | `#FFE08A` | Types, annotations, warnings |
+| Orange | `#F2B482` | Numbers, constants |
+| Red | `#FF6B81` | Errors, deletes |
+| String accent | `#9FE8C6` | Inline strings, templates |
 
-## Supported Plugins
+Switch to the `warm` palette (`lua/xghost/colors/warm.lua`) for deeper backgrounds and sunset accents.
 
-xghost.nvim includes highlight groups for popular plugins:
+---
 
-- **Syntax**: TreeSitter, LSP Semantic Tokens
-- **LSP**: Diagnostics, References, Inlay Hints, Code Lens
-- **Git**: GitSigns, vim-gitgutter, Neogit, Diffview
-- **Files**: NvimTree, NeoTree
-- **UI**: Telescope, WhichKey, Notify
-- **Statusline**: Lualine, Bufferline
-- **Indent**: indent-blankline
+## Troubleshooting
 
-## Development Roadmap
+1. **Was `termguicolors` enabled?** xghost turns it on automatically when Neovim supports it, but some terminal multiplexers override colors—set `set termguicolors` in early config.
+2. **Highlight override not applying?** Make sure `overrides` is a plain Lua table (not a list). If you need logic, wrap it in a function that returns a table after calling `require("xghost").setup`.
+3. **Sidebar looks too dark?** Set `darker_sidebar = false` or target `NvimTreeNormal`/`NeoTreeNormal` via `overrides`.
+4. **Statusline plugins look off?** Keep `priority = 1000` (lazy) or `after = "xghost.nvim"` (packer) so other UI plugins see the palette before drawing.
 
-- [x] Default vibrant/warm style
-- [ ] Monochrome variant
-- [ ] Light variant
-- [ ] High contrast variant
-- [ ] Additional plugin support
-- [ ] Theme generator/customizer
-- [ ] Lualine theme integration
-- [ ] Terminal emulator themes
+---
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Bug reports, palette tweaks, and new plugin integrations are welcome. Suggested workflow:
+
+1. Fork & clone, then create a topic branch.
+2. Run `stylua lua` (config in `stylua.toml`) before opening a PR.
+3. Add screenshots or palette references to `doc/references/` when shipping new styles.
+
+---
+
+Enjoy the theme! If you build something that pairs nicely with xghost (status lines, dashboards, etc.), let us know so we can highlight it here. <sub>[back to top](#top)</sub>
 
 ## License
 
 MIT
-
-## Credits
-
-Created by qdrtech
-
-Inspired by popular warm color schemes and the Neovim community

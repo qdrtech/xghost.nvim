@@ -2,14 +2,28 @@
 -- Main entry point
 local M = {}
 
+-- Track if setup has been called
+local _setup_called = false
+
 -- Setup function - called by user to configure the theme
 function M.setup(opts)
 	local config = require("xghost.config")
 	config.setup(opts)
+	_setup_called = true
+	
+	-- Automatically load the theme after setup
+	M.load()
 end
 
 -- Load the theme
 function M.load()
+	-- Auto-setup with defaults if setup() was never called
+	if not _setup_called then
+		local config = require("xghost.config")
+		config.setup({}) -- Use defaults
+		_setup_called = true
+	end
+
 	local config = require("xghost.config")
 	local color_loader = require("xghost.colors")
 	local theme = require("xghost.theme")

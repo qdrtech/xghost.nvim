@@ -1,0 +1,80 @@
+# claude
+.claude/
+
+# Editor and IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.netrwhist
+Session.vim
+.vim/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Lua compiled files
+*.luac
+luac.out
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.backup
+*.orig
+
+# Test output and coverage
+test_output/
+coverage/
+*.coverage
+.coverage
+htmlcov/
+
+# Documentation build artifacts
+doc/tags
+tags
+.tags
+
+# Package manager files
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build artifacts
+build/
+dist/
+*.zip
+*.tar.gz
+*.tgz
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Cache directories
+.cache/
+*.cache
+
+# Runtime files
+*.pid
+*.seed
+*.pid.lock
+
+# Debug files
+*.log
+debug.log
+error.log
+
+# Vim help tags
+doc/tags
