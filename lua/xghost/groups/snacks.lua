@@ -5,6 +5,10 @@ local M = {}
 function M.get(c, config)
 	local hl = {}
 	local bg = config.darker_sidebar and c.bg_sidebar or c.bg
+	local tree_fg = c.sidebar_text or c.fg
+	local tree_muted = c.sidebar_muted or c.fg_dim
+	local folder_closed = c.folder_closed or c.warm
+	local git_untracked = c.git_untracked or c.git_change
 
 	-- Snacks Picker (Telescope-like interface)
 	hl.SnacksPickerNormal = { fg = c.fg, bg = c.bg_float }
@@ -12,54 +16,54 @@ function M.get(c, config)
 	hl.SnacksPickerTitle = { fg = c.blue, bg = c.bg_float, bold = true }
 	hl.SnacksPickerPrompt = { fg = c.fg, bg = c.bg_float }
 	hl.SnacksPickerMatch = { fg = c.blue, bold = true }
-	hl.SnacksPickerSelected = { fg = c.fg, bg = c.bg_visual, bold = true }
+	hl.SnacksPickerSelected = { fg = c.fg, bg = c.bg_selection, bold = true }
 	hl.SnacksPickerCurrent = { bg = c.bg_highlight }
 
 	-- Snacks Explorer (File tree) - spec section 8
-	hl.SnacksExplorerNormal = { fg = "#D2D7D6", bg = bg } -- Default text from spec
+	hl.SnacksExplorerNormal = { fg = tree_fg, bg = bg }
 	hl.SnacksExplorerBorder = { fg = c.border, bg = bg }
-	hl.SnacksExplorerTitle = { fg = c.warm, bg = bg, bold = true } -- Warm accent for titles
+	hl.SnacksExplorerTitle = { fg = c.warm, bg = bg, bold = true }
 
 	-- File/folder items (spec section 8)
-	hl.SnacksExplorerDir = { fg = c.warm, bold = true } -- Open folder: warm, semibold
-	hl.SnacksExplorerDirClosed = { fg = "#CFB08A" } -- Closed folder: dimmer warm
-	hl.SnacksExplorerFile = { fg = "#D2D7D6" } -- Regular files
-	hl.SnacksExplorerHidden = { fg = c.fg_dim } -- Muted (dotfiles, ignored)
+	hl.SnacksExplorerDir = { fg = c.warm, bold = true }
+	hl.SnacksExplorerDirClosed = { fg = folder_closed }
+	hl.SnacksExplorerFile = { fg = tree_fg }
+	hl.SnacksExplorerHidden = { fg = tree_muted }
 	hl.SnacksExplorerSymlink = { fg = c.cyan }
 	hl.SnacksExplorerExecutable = { fg = c.green }
 
 	-- Git decorations in tree (spec section 8)
-	hl.SnacksExplorerGitAdd = { fg = c.green } -- Added: accent.green
-	hl.SnacksExplorerGitChange = { fg = c.blue } -- Modified: accent.blue
-	hl.SnacksExplorerGitDelete = { fg = c.red } -- Removed: accent.red
-	hl.SnacksExplorerGitIgnored = { fg = c.fg_dim }
-	hl.SnacksExplorerGitUntracked = { fg = "#B3C2A1" } -- Untracked: from spec
+	hl.SnacksExplorerGitAdd = { fg = c.green }
+	hl.SnacksExplorerGitChange = { fg = c.blue }
+	hl.SnacksExplorerGitDelete = { fg = c.red }
+	hl.SnacksExplorerGitIgnored = { fg = tree_muted }
+	hl.SnacksExplorerGitUntracked = { fg = git_untracked }
 
 	-- Icons and indent markers
 	hl.SnacksExplorerIcon = { fg = c.fg_dark }
-	hl.SnacksExplorerIndent = { fg = c.fg_ghost }
+	hl.SnacksExplorerIndent = { fg = c.indent_guide }
 
 	-- Selection and cursor (spec section 8: selection with left bar accent.cyan)
-	hl.SnacksExplorerCursor = { bg = c.bg_selection } -- Selection row bg from spec
-	hl.SnacksExplorerSelected = { fg = c.fg, bg = c.bg_selection } -- Keep text normal, bg selection
-	hl.SnacksExplorerSelectedBar = { fg = c.cyan } -- Left bar in cyan (2px)
+	hl.SnacksExplorerCursor = { bg = c.bg_selection }
+	hl.SnacksExplorerSelected = { fg = c.fg, bg = c.bg_selection }
+	hl.SnacksExplorerSelectedBar = { fg = c.cyan }
 
 	-- Snacks Picker built-in highlight groups (used by Explorer internally)
 	hl.SnacksPickerTree = { fg = c.indent_guide }
 	hl.SnacksPickerDirectory = { fg = c.warm, bold = true }
-	hl.SnacksPickerDir = { fg = c.fg_dim }
-	hl.SnacksPickerFile = { fg = "#D2D7D6" }
-	hl.SnacksPickerHidden = { fg = c.fg_dim }
-	hl.SnacksPickerPathHidden = { fg = c.fg_dim }
-	hl.SnacksPickerPathIgnored = { fg = c.fg_dim }
+	hl.SnacksPickerDir = { fg = tree_muted }
+	hl.SnacksPickerFile = { fg = tree_fg }
+	hl.SnacksPickerHidden = { fg = tree_muted }
+	hl.SnacksPickerPathHidden = { fg = tree_muted }
+	hl.SnacksPickerPathIgnored = { fg = tree_muted }
 	hl.SnacksPickerSelected = { fg = c.fg, bg = c.bg_selection, bold = true }
 	hl.SnacksPickerToggle = { fg = c.cyan }
 	hl.SnacksPickerLink = { fg = c.cyan }
 	hl.SnacksPickerGitStatusAdded = { fg = c.green }
 	hl.SnacksPickerGitStatusModified = { fg = c.blue }
 	hl.SnacksPickerGitStatusDeleted = { fg = c.red }
-	hl.SnacksPickerGitStatusIgnored = { fg = c.fg_dim }
-	hl.SnacksPickerGitStatusUntracked = { fg = "#B3C2A1" }
+	hl.SnacksPickerGitStatusIgnored = { fg = tree_muted }
+	hl.SnacksPickerGitStatusUntracked = { fg = git_untracked }
 
 	-- Snacks Dashboard
 	hl.SnacksDashboardNormal = { fg = c.fg, bg = config.transparent and c.none or c.bg }

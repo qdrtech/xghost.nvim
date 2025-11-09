@@ -3,6 +3,11 @@
 
 local M = {}
 
+local function load_theme(style)
+	require("xghost").setup({ style = style })
+	require("xghost").load()
+end
+
 local function to_hex(value)
 	if type(value) ~= "number" then
 		return value
@@ -207,17 +212,36 @@ function M.test_git_highlights()
 end
 
 -- Ensure key highlight colors match the warm design spec
-function M.test_color_alignment()
-	local expectations = {
-		{ "LineNr", { fg = "#E19C60" } },
-		{ "CursorLineNr", { fg = "#F2BF8A" } },
-		{ "Pmenu", { bg = "#2F3236" } },
-		{ "PmenuSel", { bg = "#3A3E43" } },
-		{ "SnacksPickerTree", { fg = "#44474B" } },
-		{ "SnacksPickerDirectory", { fg = "#E19C60", bold = true } },
-		{ "SnacksPickerFile", { fg = "#D2D7D6" } },
-		{ "SnacksPickerSelected", { bg = "#34373B" } },
+function M.test_color_alignment(style)
+	local expectations_by_style = {
+		default = {
+			{ "LineNr", { fg = "#F5A97F" } },
+			{ "CursorLineNr", { fg = "#FFD8A8" } },
+			{ "Pmenu", { bg = "#242635" } },
+			{ "PmenuSel", { bg = "#343652" } },
+			{ "SnacksPickerTree", { fg = "#3A3D50" } },
+			{ "SnacksPickerDirectory", { fg = "#F5A97F", bold = true } },
+			{ "SnacksPickerFile", { fg = "#D9DBF2" } },
+			{ "SnacksPickerSelected", { bg = "#2B2E3F" } },
+		},
+		warm = {
+			{ "LineNr", { fg = "#E19C60" } },
+			{ "CursorLineNr", { fg = "#F2BF8A" } },
+			{ "Pmenu", { bg = "#2F3236" } },
+			{ "PmenuSel", { bg = "#3A3E43" } },
+			{ "SnacksPickerTree", { fg = "#44474B" } },
+			{ "SnacksPickerDirectory", { fg = "#E19C60", bold = true } },
+			{ "SnacksPickerFile", { fg = "#D2D7D6" } },
+			{ "SnacksPickerSelected", { bg = "#34373B" } },
+		},
 	}
+
+	local expectations = expectations_by_style[style]
+	if not expectations then
+		return false, ("Unknown style '%s'"):format(style)
+	end
+
+	load_theme(style)
 
 	local errors = {}
 	for _, item in ipairs(expectations) do
@@ -239,30 +263,42 @@ end
 function M.run_all_tests()
 	print("Running xghost.nvim theme tests...\n")
 
-	-- Load the theme first
-	require("xghost").setup()
-	require("xghost").load()
-
-	local tests = {
+	local styles = { "default", "warm" }
+	local structural_tests = {
 		{ name = "Core Highlights", func = M.test_core_highlights },
 		{ name = "Bufferline Highlights", func = M.test_bufferline_highlights },
 		{ name = "Lualine Highlights", func = M.test_lualine_highlights },
 		{ name = "Snacks Highlights", func = M.test_snacks_highlights },
 		{ name = "Oil Highlights", func = M.test_oil_highlights },
 		{ name = "Git Highlights", func = M.test_git_highlights },
-		{ name = "Color Alignment", func = M.test_color_alignment },
 	}
 
 	local passed = 0
 	local failed = 0
 
-	for _, test in ipairs(tests) do
-		local ok, result = test.func()
+	for _, style in ipairs(styles) do
+		print(("\n== Testing style: %s =="):format(style))
+		load_theme(style)
+
+		for _, test in ipairs(structural_tests) do
+			local ok, result = test.func()
+			local name = ("%s (%s)"):format(test.name, style)
+			if ok then
+				print(string.format("✓ %s: %s", name, result))
+				passed = passed + 1
+			else
+				print(string.format("✗ %s: %s", name, result))
+				failed = failed + 1
+			end
+		end
+
+		local ok, result = M.test_color_alignment(style)
+		local name = ("Color Alignment (%s)"):format(style)
 		if ok then
-			print(string.format("✓ %s: %s", test.name, result))
+			print(string.format("✓ %s: %s", name, result))
 			passed = passed + 1
 		else
-			print(string.format("✗ %s: %s", test.name, result))
+			print(string.format("✗ %s: %s", name, result))
 			failed = failed + 1
 		end
 	end
