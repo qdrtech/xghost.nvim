@@ -3,6 +3,28 @@
 
 local M = {}
 
+local function to_hex(value)
+	if type(value) ~= "number" then
+		return value
+	end
+	return string.format("#%06X", value)
+end
+
+local function normalize_attr(attr, value)
+	if value == nil then
+		return value
+	end
+
+	if attr == "fg" or attr == "bg" or attr == "sp" then
+		if type(value) == "string" and value:sub(1, 1) == "#" then
+			return value:upper()
+		end
+		return to_hex(value)
+	end
+
+	return value
+end
+
 -- Helper function to check if a highlight group is defined
 local function check_hl_group(group_name, expected_attrs)
 	local hl = vim.api.nvim_get_hl(0, { name = group_name })
@@ -14,10 +36,15 @@ local function check_hl_group(group_name, expected_attrs)
 	-- Check expected attributes if provided
 	if expected_attrs then
 		for attr, expected_value in pairs(expected_attrs) do
-			if hl[attr] ~= expected_value then
+			local actual = normalize_attr(attr, hl[attr])
+			local expected = normalize_attr(attr, expected_value)
+			if actual ~= expected then
 				return false, string.format(
 					"Highlight group '%s' attr '%s' = %s, expected %s",
-					group_name, attr, tostring(hl[attr]), tostring(expected_value)
+					group_name,
+					attr,
+					tostring(actual),
+					tostring(expected)
 				)
 			end
 		end
@@ -112,6 +139,9 @@ function M.test_snacks_highlights()
 		"SnacksExplorerFile",
 		"SnacksExplorerGitAdd",
 		"SnacksExplorerGitChange",
+		"SnacksPickerTree",
+		"SnacksPickerDirectory",
+		"SnacksPickerFile",
 	}
 
 	local errors = {}
@@ -176,6 +206,35 @@ function M.test_git_highlights()
 	return true, "All git highlights defined"
 end
 
+-- Ensure key highlight colors match the warm design spec
+function M.test_color_alignment()
+	local expectations = {
+		{ "LineNr", { fg = "#E19C60" } },
+		{ "CursorLineNr", { fg = "#F2BF8A" } },
+		{ "Pmenu", { bg = "#2F3236" } },
+		{ "PmenuSel", { bg = "#3A3E43" } },
+		{ "SnacksPickerTree", { fg = "#44474B" } },
+		{ "SnacksPickerDirectory", { fg = "#E19C60", bold = true } },
+		{ "SnacksPickerFile", { fg = "#D2D7D6" } },
+		{ "SnacksPickerSelected", { bg = "#34373B" } },
+	}
+
+	local errors = {}
+	for _, item in ipairs(expectations) do
+		local group, attrs = item[1], item[2]
+		local ok, err = check_hl_group(group, attrs)
+		if not ok then
+			table.insert(errors, err)
+		end
+	end
+
+	if #errors > 0 then
+		return false, "Color alignment issues:\n" .. table.concat(errors, "\n")
+	end
+
+	return true, "Key colors match the spec"
+end
+
 -- Run all tests
 function M.run_all_tests()
 	print("Running xghost.nvim theme tests...\n")
@@ -191,6 +250,7 @@ function M.run_all_tests()
 		{ name = "Snacks Highlights", func = M.test_snacks_highlights },
 		{ name = "Oil Highlights", func = M.test_oil_highlights },
 		{ name = "Git Highlights", func = M.test_git_highlights },
+		{ name = "Color Alignment", func = M.test_color_alignment },
 	}
 
 	local passed = 0

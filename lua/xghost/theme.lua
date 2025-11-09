@@ -109,42 +109,60 @@ function M.get_extra_plugin_highlights(c, config)
 	-- NvimTree
 	if config.plugins.nvim_tree then
 		local bg = config.darker_sidebar and c.bg_sidebar or c.bg
-		hl.NvimTreeNormal = { fg = c.fg, bg = bg }
-		hl.NvimTreeNormalNC = { fg = c.fg, bg = bg }
-		hl.NvimTreeRootFolder = { fg = c.blue, bold = true }
-		hl.NvimTreeFolderName = { fg = c.fg }
-		hl.NvimTreeFolderIcon = { fg = c.blue }
-		hl.NvimTreeEmptyFolderName = { fg = c.fg_dark }
-		hl.NvimTreeOpenedFolderName = { fg = c.blue }
+		local tree_fg = "#D2D7D6"
+		local tree_muted = c.fg_dim
+		local folder_closed = "#CFB08A"
+
+		hl.NvimTreeNormal = { fg = tree_fg, bg = bg }
+		hl.NvimTreeNormalNC = { fg = tree_fg, bg = bg }
+		hl.NvimTreeWinSeparator = { fg = c.border, bg = bg }
+		hl.NvimTreeRootFolder = { fg = c.warm, bold = true }
+		hl.NvimTreeFolderName = { fg = folder_closed }
+		hl.NvimTreeFolderIcon = { fg = folder_closed }
+		hl.NvimTreeOpenedFolderName = { fg = c.warm, bold = true }
+		hl.NvimTreeEmptyFolderName = { fg = tree_muted }
 		hl.NvimTreeSymlink = { fg = c.cyan }
 		hl.NvimTreeSpecialFile = { fg = c.orange }
-		hl.NvimTreeImageFile = { fg = c.magenta }
-		hl.NvimTreeIndentMarker = { fg = c.fg_ghost }
+		hl.NvimTreeImageFile = { fg = c.cyan }
+		hl.NvimTreeIndentMarker = { fg = c.indent_guide }
+		hl.NvimTreeCursorLine = { bg = c.bg_selection }
+		hl.NvimTreeCursorLineNr = { fg = c.warm_bright, bg = bg }
 		hl.NvimTreeGitDirty = { fg = c.git_change }
 		hl.NvimTreeGitStaged = { fg = c.git_add }
 		hl.NvimTreeGitMerge = { fg = c.git_change }
 		hl.NvimTreeGitRenamed = { fg = c.git_change }
 		hl.NvimTreeGitNew = { fg = c.git_add }
 		hl.NvimTreeGitDeleted = { fg = c.git_delete }
+		hl.NvimTreeGitIgnored = { fg = tree_muted }
+		hl.NvimTreeGitUntracked = { fg = "#B3C2A1" }
+		hl.NvimTreeSignColumn = { fg = c.fg_ui, bg = bg }
 	end
 
 	-- NeoTree
 	if config.plugins.neo_tree then
 		local bg = config.darker_sidebar and c.bg_sidebar or c.bg
-		hl.NeoTreeNormal = { fg = c.fg, bg = bg }
-		hl.NeoTreeNormalNC = { fg = c.fg, bg = bg }
-		hl.NeoTreeRootName = { fg = c.blue, bold = true }
-		hl.NeoTreeFileName = { fg = c.fg }
-		hl.NeoTreeFileIcon = { fg = c.fg_dark }
-		hl.NeoTreeFolderIcon = { fg = c.blue }
-		hl.NeoTreeFolderName = { fg = c.fg }
+		local tree_fg = "#D2D7D6"
+		local tree_muted = c.fg_dim
+		local folder_closed = "#CFB08A"
+
+		hl.NeoTreeNormal = { fg = tree_fg, bg = bg }
+		hl.NeoTreeNormalNC = { fg = tree_fg, bg = bg }
+		hl.NeoTreeWinSeparator = { fg = c.border, bg = bg }
+		hl.NeoTreeRootName = { fg = c.warm, bold = true }
+		hl.NeoTreeFileName = { fg = tree_fg }
+		hl.NeoTreeFileNameOpened = { fg = tree_fg }
+		hl.NeoTreeFileIcon = { fg = tree_muted }
+		hl.NeoTreeFolderIcon = { fg = folder_closed }
+		hl.NeoTreeFolderName = { fg = folder_closed }
 		hl.NeoTreeSymbolicLinkTarget = { fg = c.cyan }
 		hl.NeoTreeGitAdded = { fg = c.git_add }
 		hl.NeoTreeGitConflict = { fg = c.git_change }
 		hl.NeoTreeGitDeleted = { fg = c.git_delete }
-		hl.NeoTreeGitIgnored = { fg = c.fg_ghost }
+		hl.NeoTreeGitIgnored = { fg = tree_muted }
 		hl.NeoTreeGitModified = { fg = c.git_change }
-		hl.NeoTreeGitUntracked = { fg = c.fg_ghost }
+		hl.NeoTreeGitUntracked = { fg = "#B3C2A1" }
+		hl.NeoTreeCursorLine = { bg = c.bg_selection }
+		hl.NeoTreeIndentMarker = { fg = c.indent_guide }
 	end
 
 	-- Bufferline and Lualine now have dedicated highlight files
@@ -152,9 +170,9 @@ function M.get_extra_plugin_highlights(c, config)
 
 	-- Indent Blankline
 	if config.plugins.indent_blankline then
-		hl.IblIndent = { fg = c.fg_ghost }
+		hl.IblIndent = { fg = c.indent_guide }
 		hl.IblScope = { fg = c.fg_dark }
-		hl.IndentBlanklineChar = { fg = c.fg_ghost }
+		hl.IndentBlanklineChar = { fg = c.indent_guide }
 		hl.IndentBlanklineContextChar = { fg = c.fg_dark }
 	end
 

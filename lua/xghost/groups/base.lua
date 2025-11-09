@@ -7,7 +7,7 @@ function M.get(c, config)
 	-- Editor
 	hl.Normal = { fg = c.fg, bg = config.transparent and c.none or c.bg }
 	hl.NormalFloat = { fg = c.fg, bg = c.bg_float }
-	hl.FloatBorder = { fg = c.border, bg = c.bg_float }
+	hl.FloatBorder = { fg = c.border_highlight, bg = c.bg_float }
 	hl.FloatTitle = { fg = c.blue, bg = c.bg_float, bold = true }
 
 	-- Line numbers and columns (spec section 6)
@@ -36,15 +36,21 @@ function M.get(c, config)
 	hl.Substitute = { fg = c.bg, bg = c.red }
 
 	-- Statusline
-	hl.StatusLine = { fg = c.fg_dark, bg = c.bg_highlight }
-	hl.StatusLineNC = { fg = c.fg_ghost, bg = c.bg }
+	hl.StatusLine = { fg = c.fg_ui, bg = c.bg_darker }
+	hl.StatusLineNC = { fg = c.fg_ui, bg = c.bg_statusline_inactive }
 	hl.WinBar = { fg = c.fg_dark, bg = c.none }
 	hl.WinBarNC = { fg = c.fg_ghost, bg = c.none }
 
 	-- Tabline
-	hl.TabLine = { fg = c.fg_ghost, bg = c.bg_highlight }
+	hl.TabLine = { fg = c.tab_inactive_fg, bg = c.tab_inactive_bg }
 	hl.TabLineFill = { bg = c.bg }
-	hl.TabLineSel = { fg = c.fg, bg = c.bg_visual, bold = true }
+	hl.TabLineSel = {
+		fg = c.tab_active_fg,
+		bg = c.tab_active_bg,
+		bold = true,
+		underline = true,
+		sp = c.tab_active_border,
+	}
 
 	-- Messages and command line
 	hl.MsgArea = { fg = c.fg }
@@ -55,10 +61,10 @@ function M.get(c, config)
 	hl.Question = { fg = c.blue }
 
 	-- Popup menu (completion)
-	hl.Pmenu = { fg = c.fg, bg = c.bg_highlight }
-	hl.PmenuSel = { fg = c.fg, bg = c.bg_visual, bold = true }
-	hl.PmenuSbar = { bg = c.bg_highlight }
-	hl.PmenuThumb = { bg = c.fg_ghost }
+	hl.Pmenu = { fg = "#E8EBEC", bg = c.bg_pmenu }
+	hl.PmenuSel = { fg = c.fg, bg = c.bg_pmenu_sel, bold = true, underline = true, sp = c.cyan }
+	hl.PmenuSbar = { bg = c.scrollbar_track }
+	hl.PmenuThumb = { bg = c.scrollbar_thumb }
 	hl.WildMenu = { fg = c.fg, bg = c.bg_visual }
 
 	-- Diffs (spec section 10)
@@ -68,8 +74,8 @@ function M.get(c, config)
 	hl.DiffText = { bg = c.diff_text }
 
 	-- Folds
-	hl.Folded = { fg = c.fg_dark, bg = c.bg_highlight }
-	hl.FoldColumn = { fg = c.fg_ghost, bg = config.transparent and c.none or c.bg }
+	hl.Folded = { fg = c.fg_dark, bg = config.transparent and c.none or c.bg_sidebar }
+	hl.FoldColumn = { fg = c.fg_ghost, bg = config.transparent and c.none or c.bg_sidebar }
 
 	-- Spell checking
 	hl.SpellBad = { sp = c.error, undercurl = true }
@@ -85,9 +91,9 @@ function M.get(c, config)
 	hl.Directory = { fg = c.blue }
 
 	-- Special keys and whitespace
-	hl.SpecialKey = { fg = c.fg_ghost }
-	hl.NonText = { fg = c.fg_ghost }
-	hl.Whitespace = { fg = c.fg_ghost }
+	hl.SpecialKey = { fg = c.indent_guide }
+	hl.NonText = { fg = c.indent_guide }
+	hl.Whitespace = { fg = c.indent_guide }
 	hl.EndOfBuffer = { fg = c.bg }
 
 	-- Conceal

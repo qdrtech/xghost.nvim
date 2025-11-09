@@ -40,9 +40,26 @@ function M.get(c, config)
 	hl.SnacksExplorerIndent = { fg = c.fg_ghost }
 
 	-- Selection and cursor (spec section 8: selection with left bar accent.cyan)
-	hl.SnacksExplorerCursor = { bg = "#34373B" } -- Selection row bg from spec
-	hl.SnacksExplorerSelected = { fg = c.fg, bg = "#34373B" } -- Keep text normal, bg selection
+	hl.SnacksExplorerCursor = { bg = c.bg_selection } -- Selection row bg from spec
+	hl.SnacksExplorerSelected = { fg = c.fg, bg = c.bg_selection } -- Keep text normal, bg selection
 	hl.SnacksExplorerSelectedBar = { fg = c.cyan } -- Left bar in cyan (2px)
+
+	-- Snacks Picker built-in highlight groups (used by Explorer internally)
+	hl.SnacksPickerTree = { fg = c.indent_guide }
+	hl.SnacksPickerDirectory = { fg = c.warm, bold = true }
+	hl.SnacksPickerDir = { fg = c.fg_dim }
+	hl.SnacksPickerFile = { fg = "#D2D7D6" }
+	hl.SnacksPickerHidden = { fg = c.fg_dim }
+	hl.SnacksPickerPathHidden = { fg = c.fg_dim }
+	hl.SnacksPickerPathIgnored = { fg = c.fg_dim }
+	hl.SnacksPickerSelected = { fg = c.fg, bg = c.bg_selection, bold = true }
+	hl.SnacksPickerToggle = { fg = c.cyan }
+	hl.SnacksPickerLink = { fg = c.cyan }
+	hl.SnacksPickerGitStatusAdded = { fg = c.green }
+	hl.SnacksPickerGitStatusModified = { fg = c.blue }
+	hl.SnacksPickerGitStatusDeleted = { fg = c.red }
+	hl.SnacksPickerGitStatusIgnored = { fg = c.fg_dim }
+	hl.SnacksPickerGitStatusUntracked = { fg = "#B3C2A1" }
 
 	-- Snacks Dashboard
 	hl.SnacksDashboardNormal = { fg = c.fg, bg = config.transparent and c.none or c.bg }

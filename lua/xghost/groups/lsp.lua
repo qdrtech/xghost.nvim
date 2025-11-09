@@ -12,11 +12,11 @@ function M.get(c, config)
 	hl.DiagnosticOk = { fg = c.green }
 
 	-- Diagnostic virtual text
-	hl.DiagnosticVirtualTextError = { fg = c.error, bg = c.none }
-	hl.DiagnosticVirtualTextWarn = { fg = c.warning, bg = c.none }
-	hl.DiagnosticVirtualTextInfo = { fg = c.info, bg = c.none }
-	hl.DiagnosticVirtualTextHint = { fg = c.hint, bg = c.none }
-	hl.DiagnosticVirtualTextOk = { fg = c.green, bg = c.none }
+	hl.DiagnosticVirtualTextError = { fg = c.error, bg = c.virtual_text_bg }
+	hl.DiagnosticVirtualTextWarn = { fg = c.warning, bg = c.virtual_text_bg }
+	hl.DiagnosticVirtualTextInfo = { fg = c.info, bg = c.virtual_text_bg }
+	hl.DiagnosticVirtualTextHint = { fg = c.hint, bg = c.virtual_text_bg }
+	hl.DiagnosticVirtualTextOk = { fg = c.green, bg = c.virtual_text_bg }
 
 	-- Diagnostic underlines
 	hl.DiagnosticUnderlineError = { sp = c.error, undercurl = true }
@@ -26,11 +26,12 @@ function M.get(c, config)
 	hl.DiagnosticUnderlineOk = { sp = c.green, undercurl = true }
 
 	-- Diagnostic signs (gutter)
-	hl.DiagnosticSignError = { fg = c.error, bg = config.transparent and c.none or c.bg }
-	hl.DiagnosticSignWarn = { fg = c.warning, bg = config.transparent and c.none or c.bg }
-	hl.DiagnosticSignInfo = { fg = c.info, bg = config.transparent and c.none or c.bg }
-	hl.DiagnosticSignHint = { fg = c.hint, bg = config.transparent and c.none or c.bg }
-	hl.DiagnosticSignOk = { fg = c.green, bg = config.transparent and c.none or c.bg }
+	local sign_bg = config.transparent and c.none or c.bg_sidebar
+	hl.DiagnosticSignError = { fg = c.error, bg = sign_bg }
+	hl.DiagnosticSignWarn = { fg = c.warning, bg = sign_bg }
+	hl.DiagnosticSignInfo = { fg = c.info, bg = sign_bg }
+	hl.DiagnosticSignHint = { fg = c.hint, bg = sign_bg }
+	hl.DiagnosticSignOk = { fg = c.green, bg = sign_bg }
 
 	-- Diagnostic floating windows
 	hl.DiagnosticFloatingError = { fg = c.error, bg = c.bg_float }

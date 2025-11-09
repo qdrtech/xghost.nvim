@@ -12,6 +12,12 @@ M.bg_float = "#2E3033" -- Popups, LSP hover, completion menu
 M.bg_highlight = "#323438" -- Cursor line highlight
 M.bg_visual = "#3A3D41" -- Visual selection
 M.bg_search = "#373C42" -- Search highlight background
+M.bg_selection = "#34373B" -- Used for sidebar selections and virtual text patches
+M.bg_pmenu = "#2F3236" -- Completion menu background
+M.bg_pmenu_sel = "#3A3E43" -- Completion menu selection row
+M.bg_statusline_inactive = "#2A2C2E" -- Inactive statusline/tabline bg
+M.tab_active_bg = "#303337"
+M.tab_inactive_bg = "#26282A"
 
 -- Foreground colors
 M.fg = "#FAFAFB" -- Primary text (fg.default)
@@ -20,10 +26,17 @@ M.fg_ui = "#BFC7C4" -- Gutter text, inactive elements
 M.fg_dark = "#9CA9A5" -- Alias for dim
 M.fg_darker = "#848E8B" -- Even dimmer
 M.fg_ghost = "#5A5F64" -- Very dim/ghosted text
+M.tab_active_fg = "#EAECEE"
+M.tab_inactive_fg = "#A9B2B0"
+M.tab_active_border = "#E19C60"
+M.clock_text = "#C9D0CE" -- Statusline clock chip text
 
 -- Border and UI elements
 M.border = "#3A3C3F" -- Subtle borders, splits
 M.border_highlight = "#3E4145" -- Highlighted borders
+M.scrollbar_track = "#3B3E42"
+M.scrollbar_thumb = "#5A5F64"
+M.indent_guide = "#44474B"
 
 -- Comments
 M.comment = "#9CA9A5" -- fg.dim - muted gray/teal
@@ -60,15 +73,16 @@ M.magenta_muted = M.purple
 
 -- Git colors (using macOS system colors)
 M.git_add = M.green
-M.git_change = M.yellow
+M.git_change = M.blue
 M.git_delete = M.red
-M.git_text = M.blue
+M.git_text = M.cyan
 
 -- Diagnostic colors
 M.error = M.red
 M.warning = M.yellow
 M.info = M.blue
 M.hint = M.cyan
+M.virtual_text_bg = "#34373B"
 
 -- Diff colors (from spec section 10)
 M.diff_add = "#233026" -- Dark green background
