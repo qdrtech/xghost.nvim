@@ -21,8 +21,5 @@ return {
 			oil = true,
 		},
 	},
-	config = function(_, opts)
-		require("xghost").setup(opts)
-		vim.cmd.colorscheme("xghost")
-	end,
+	-- No config function needed - theme auto-loads after setup!
 }
