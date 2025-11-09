@@ -150,6 +150,26 @@ require("xghost").setup({
 })
 ```
 
+**Minimal plugin footprint**
+
+```lua
+require("xghost").setup({
+  plugins = {
+    treesitter = true,
+    lsp = true,
+    telescope = false,
+    gitsigns = false,
+    nvim_tree = false,
+    neo_tree = false,
+    bufferline = false,
+    lualine = false,
+    snacks = false,
+    oil = false,
+    indent_blankline = false,
+  },
+})
+```
+
 ---
 
 ## Runtime Helpers
@@ -178,6 +198,40 @@ Everything is opt-in/out through the `plugins` table, so you can disable section
 
 ---
 
+## Color Palette (Default Style)
+
+The default palette (`lua/xghost/colors/default.lua`) pairs cool neutrals with a warm accent.
+
+### Base surfaces
+
+| Element | Hex | Usage |
+| --- | --- | --- |
+| `bg` | `#1E1F26` | Main editor background |
+| `bg_sidebar` | `#191A22` | Sidebars, sign columns, gutters |
+| `bg_visual` | `#343849` | Visual selection / block highlight |
+| `bg_pmenu_sel` | `#343652` | Completion or popup selection rows |
+| `fg` | `#F4F4F8` | Primary text |
+| `fg_dim` | `#9FA6C1` | Comments, guides, muted UI |
+| `border` | `#2F3140` | Window separators, floating borders |
+
+### Accent & syntax
+
+| Color | Hex | Typical usage |
+| --- | --- | --- |
+| Warm accent | `#F5A97F` | Line numbers, tabs, titles |
+| Blue | `#82AAFF` | Functions, call signatures |
+| Cyan | `#7DCFFF` | Identifiers, special strings |
+| Purple | `#C099FF` | Keywords, flow control |
+| Green | `#A8E07C` | Strings, success messages |
+| Yellow | `#FFE08A` | Types, annotations, warnings |
+| Orange | `#F2B482` | Numbers, constants |
+| Red | `#FF6B81` | Errors, deletes |
+| String accent | `#9FE8C6` | Inline strings, templates |
+
+Switch to the `warm` palette (`lua/xghost/colors/warm.lua`) for deeper backgrounds and sunset accents.
+
+---
+
 ## Troubleshooting
 
 1. **Was `termguicolors` enabled?** xghost turns it on automatically when Neovim supports it, but some terminal multiplexers override colors—set `set termguicolors` in early config.
@@ -198,3 +252,7 @@ Bug reports, palette tweaks, and new plugin integrations are welcome. Suggested 
 ---
 
 Enjoy the theme! If you build something that pairs nicely with xghost (status lines, dashboards, etc.), let us know so we can highlight it here. <sub>[back to top](#top)</sub>
+
+## License
+
+MIT
