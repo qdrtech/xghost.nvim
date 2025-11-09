@@ -106,6 +106,18 @@ end
 function M.get_extra_plugin_highlights(c, config)
 	local hl = {}
 
+	-- Helper to determine bold based on font_style
+	local function use_bold_for(element_type)
+		if config.font_style == "bold" then
+			return true
+		elseif config.font_style == "semi_bold" then
+			return element_type == "ui" or element_type == "emphasis"
+		elseif config.font_style == "regular" then
+			return element_type == "emphasis"
+		end
+		return true
+	end
+
 	-- NvimTree
 	if config.plugins.nvim_tree then
 		local bg = config.darker_sidebar and c.bg_sidebar or c.bg
@@ -116,10 +128,10 @@ function M.get_extra_plugin_highlights(c, config)
 		hl.NvimTreeNormal = { fg = tree_fg, bg = bg }
 		hl.NvimTreeNormalNC = { fg = tree_fg, bg = bg }
 		hl.NvimTreeWinSeparator = { fg = c.border, bg = bg }
-		hl.NvimTreeRootFolder = { fg = c.warm, bold = true }
+		hl.NvimTreeRootFolder = { fg = c.warm, bold = use_bold_for("ui") }
 		hl.NvimTreeFolderName = { fg = folder_closed }
 		hl.NvimTreeFolderIcon = { fg = folder_closed }
-		hl.NvimTreeOpenedFolderName = { fg = c.warm, bold = true }
+		hl.NvimTreeOpenedFolderName = { fg = c.warm, bold = use_bold_for("ui") }
 		hl.NvimTreeEmptyFolderName = { fg = tree_muted }
 		hl.NvimTreeSymlink = { fg = c.cyan }
 		hl.NvimTreeSpecialFile = { fg = c.orange }
@@ -148,7 +160,7 @@ function M.get_extra_plugin_highlights(c, config)
 		hl.NeoTreeNormal = { fg = tree_fg, bg = bg }
 		hl.NeoTreeNormalNC = { fg = tree_fg, bg = bg }
 		hl.NeoTreeWinSeparator = { fg = c.border, bg = bg }
-		hl.NeoTreeRootName = { fg = c.warm, bold = true }
+		hl.NeoTreeRootName = { fg = c.warm, bold = use_bold_for("ui") }
 		hl.NeoTreeFileName = { fg = tree_fg }
 		hl.NeoTreeFileNameOpened = { fg = tree_fg }
 		hl.NeoTreeFileIcon = { fg = tree_muted }
@@ -196,11 +208,11 @@ function M.get_extra_plugin_highlights(c, config)
 	hl.NotifyINFOIcon = { fg = c.info }
 	hl.NotifyDEBUGIcon = { fg = c.hint }
 	hl.NotifyTRACEIcon = { fg = c.magenta }
-	hl.NotifyERRORTitle = { fg = c.error, bold = true }
-	hl.NotifyWARNTitle = { fg = c.warning, bold = true }
-	hl.NotifyINFOTitle = { fg = c.info, bold = true }
-	hl.NotifyDEBUGTitle = { fg = c.hint, bold = true }
-	hl.NotifyTRACETitle = { fg = c.magenta, bold = true }
+	hl.NotifyERRORTitle = { fg = c.error, bold = use_bold_for("ui") }
+	hl.NotifyWARNTitle = { fg = c.warning, bold = use_bold_for("ui") }
+	hl.NotifyINFOTitle = { fg = c.info, bold = use_bold_for("ui") }
+	hl.NotifyDEBUGTitle = { fg = c.hint, bold = use_bold_for("ui") }
+	hl.NotifyTRACETitle = { fg = c.magenta, bold = use_bold_for("ui") }
 
 	return hl
 end

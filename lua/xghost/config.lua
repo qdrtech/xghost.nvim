@@ -18,6 +18,12 @@ M.defaults = {
 	-- Enable/disable bold keywords
 	bold_keywords = true,
 
+	-- Font style for emphasis (keywords, statements, etc.)
+	-- Options: "bold" (default), "semi_bold", "regular"
+	-- "semi_bold" removes bold from keywords while keeping it for UI elements (macOS aesthetic)
+	-- "regular" removes bold from keywords and most UI (minimal style)
+	font_style = "bold",
+
 	-- Hide inactive statusline
 	hide_inactive_statusline = false,
 
