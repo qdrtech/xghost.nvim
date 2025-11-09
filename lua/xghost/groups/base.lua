@@ -10,13 +10,13 @@ function M.get(c, config)
 	hl.FloatBorder = { fg = c.border, bg = c.bg_float }
 	hl.FloatTitle = { fg = c.blue, bg = c.bg_float, bold = true }
 
-	-- Line numbers and columns
-	hl.LineNr = { fg = c.fg_ghost }
-	hl.CursorLineNr = { fg = c.fg_dark, bold = true }
+	-- Line numbers and columns (spec section 6)
+	hl.LineNr = { fg = c.warm } -- Warm accent for line numbers
+	hl.CursorLineNr = { fg = c.warm_bright, bold = true } -- Brighter warm for current line
 	hl.CursorLine = { bg = c.bg_highlight }
 	hl.CursorColumn = { bg = c.bg_highlight }
-	hl.ColorColumn = { bg = c.bg_highlight }
-	hl.SignColumn = { fg = c.fg_ghost, bg = config.transparent and c.none or c.bg }
+	hl.ColorColumn = { bg = "#3A3C40" } -- From spec
+	hl.SignColumn = { fg = c.fg_ui, bg = config.transparent and c.none or c.bg_sidebar }
 
 	-- Cursor
 	hl.Cursor = { fg = c.bg, bg = c.fg }
@@ -29,10 +29,10 @@ function M.get(c, config)
 	hl.Visual = { bg = c.bg_visual }
 	hl.VisualNOS = { bg = c.bg_visual }
 
-	-- Search
-	hl.Search = { fg = c.bg, bg = c.yellow }
-	hl.IncSearch = { fg = c.bg, bg = c.orange }
-	hl.CurSearch = { fg = c.bg, bg = c.orange }
+	-- Search (spec section 4)
+	hl.Search = { bg = c.bg_search, underline = true, sp = c.yellow } -- Subtle with underline
+	hl.IncSearch = { bg = "#41454A", underline = true, sp = c.cyan } -- Lighter bg, cyan underline
+	hl.CurSearch = { bg = "#41454A", underline = true, sp = c.yellow } -- Current match
 	hl.Substitute = { fg = c.bg, bg = c.red }
 
 	-- Statusline
@@ -61,10 +61,10 @@ function M.get(c, config)
 	hl.PmenuThumb = { bg = c.fg_ghost }
 	hl.WildMenu = { fg = c.fg, bg = c.bg_visual }
 
-	-- Diffs
-	hl.DiffAdd = { bg = c.diff_add }
-	hl.DiffDelete = { bg = c.diff_delete }
-	hl.DiffChange = { bg = c.diff_change }
+	-- Diffs (spec section 10)
+	hl.DiffAdd = { fg = c.diff_add_fg, bg = c.diff_add }
+	hl.DiffDelete = { fg = c.diff_delete_fg, bg = c.diff_delete }
+	hl.DiffChange = { fg = c.diff_change_fg, bg = c.diff_change }
 	hl.DiffText = { bg = c.diff_text }
 
 	-- Folds
@@ -93,8 +93,8 @@ function M.get(c, config)
 	-- Conceal
 	hl.Conceal = { fg = c.subtle }
 
-	-- Match parentheses
-	hl.MatchParen = { fg = c.orange, bold = true }
+	-- Match parentheses (spec section 4: underline + accent.cyan)
+	hl.MatchParen = { fg = c.cyan, underline = true }
 
 	-- Titles and special text
 	hl.Title = { fg = c.blue, bold = true }
@@ -102,47 +102,54 @@ function M.get(c, config)
 	hl.Italic = { italic = true }
 	hl.Underlined = { underline = true }
 
-	-- Syntax groups (fallback for non-Treesitter)
-	hl.Comment = { fg = c.comment, italic = config.italic_comments }
+	-- Syntax groups (spec section 5)
+	hl.Comment = { fg = c.comment, italic = config.italic_comments } -- fg.dim with italic
 
-	hl.Constant = { fg = c.orange_muted }
-	hl.String = { fg = c.green_muted }
-	hl.Character = { fg = c.green_muted }
-	hl.Number = { fg = c.orange_muted }
-	hl.Boolean = { fg = c.orange_muted }
-	hl.Float = { fg = c.orange_muted }
+	-- Constants
+	hl.Constant = { fg = c.orange } -- accent.orange
+	hl.String = { fg = c.string } -- #A0D9AA soft green
+	hl.Character = { fg = c.string } -- Same as String
+	hl.Number = { fg = c.orange } -- accent.orange
+	hl.Boolean = { fg = c.orange } -- accent.orange
+	hl.Float = { fg = c.orange } -- accent.orange
 
-	hl.Identifier = { fg = c.fg }
-	hl.Function = { fg = c.blue_muted }
+	-- Identifiers
+	hl.Identifier = { fg = c.cyan } -- accent.cyan for identifiers
+	hl.Function = { fg = c.blue } -- accent.blue for functions
 
-	hl.Statement = { fg = c.magenta_muted, bold = config.bold_keywords }
-	hl.Conditional = { fg = c.magenta_muted, bold = config.bold_keywords }
-	hl.Repeat = { fg = c.magenta_muted, bold = config.bold_keywords }
-	hl.Label = { fg = c.magenta_muted }
-	hl.Operator = { fg = c.fg_dark }
-	hl.Keyword = { fg = c.magenta_muted, italic = config.italic_keywords }
-	hl.Exception = { fg = c.red_muted }
+	-- Statements & Keywords (semibold per spec)
+	hl.Statement = { fg = c.purple, bold = true } -- accent.purple, semibold
+	hl.Conditional = { fg = c.purple, bold = true } -- semibold
+	hl.Repeat = { fg = c.purple, bold = true } -- semibold
+	hl.Label = { fg = c.purple }
+	hl.Operator = { fg = c.operator } -- #C0C6C4 subtle
+	hl.Keyword = { fg = c.purple, bold = true } -- semibold (not italic)
+	hl.Exception = { fg = c.red }
 
-	hl.PreProc = { fg = c.magenta_muted }
-	hl.Include = { fg = c.magenta_muted }
-	hl.Define = { fg = c.magenta_muted }
-	hl.Macro = { fg = c.magenta_muted }
-	hl.PreCondit = { fg = c.magenta_muted }
+	-- PreProc
+	hl.PreProc = { fg = c.purple } -- accent.purple
+	hl.Include = { fg = c.purple }
+	hl.Define = { fg = c.purple }
+	hl.Macro = { fg = c.purple }
+	hl.PreCondit = { fg = c.purple }
 
-	hl.Type = { fg = c.yellow_muted }
-	hl.StorageClass = { fg = c.magenta_muted }
-	hl.Structure = { fg = c.yellow_muted }
-	hl.Typedef = { fg = c.yellow_muted }
+	-- Types
+	hl.Type = { fg = c.yellow } -- accent.yellow
+	hl.StorageClass = { fg = c.purple }
+	hl.Structure = { fg = c.yellow }
+	hl.Typedef = { fg = c.yellow }
 
-	hl.Special = { fg = c.blue_muted }
-	hl.SpecialChar = { fg = c.orange_muted }
-	hl.Tag = { fg = c.blue_muted }
+	-- Special
+	hl.Special = { fg = c.special } -- #D7DEE0
+	hl.SpecialChar = { fg = c.orange }
+	hl.Tag = { fg = c.blue }
 	hl.Delimiter = { fg = c.fg_dark }
 	hl.SpecialComment = { fg = c.subtle }
-	hl.Debug = { fg = c.red_muted }
+	hl.Debug = { fg = c.red }
 
-	hl.Error = { fg = c.error }
-	hl.Todo = { fg = c.bg, bg = c.yellow, bold = true }
+	-- Errors and Todos (spec section 5)
+	hl.Error = { fg = c.error, bold = true } -- Bold per spec
+	hl.Todo = { fg = c.yellow, bg = "#3B3426", bold = true } -- Yellow on dark bg
 
 	return hl
 end

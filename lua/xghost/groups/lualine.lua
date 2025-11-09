@@ -1,26 +1,32 @@
 -- Lualine highlight groups for xghost.nvim
--- Statusline with segmented design matching the reference aesthetic
+-- Statusline design from spec section 9
 local M = {}
 
 function M.get(c, config)
 	local hl = {}
 
-	-- Mode-specific colors (prominent, colored backgrounds)
-	-- These create the segmented look with colored mode indicators
-	hl.LualineNormalMode = { fg = c.bg, bg = c.green, bold = true }
-	hl.LualineInsertMode = { fg = c.bg, bg = c.blue, bold = true }
-	hl.LualineVisualMode = { fg = c.bg, bg = c.magenta, bold = true }
-	hl.LualineReplaceMode = { fg = c.bg, bg = c.red, bold = true }
-	hl.LualineCommandMode = { fg = c.bg, bg = c.yellow, bold = true }
-	hl.LualineTerminalMode = { fg = c.bg, bg = c.cyan, bold = true }
+	-- Foreground color for mode chips (dark text on colored bg)
+	local mode_fg = "#1E1F22"
 
-	-- Section backgrounds (subtle, muted backgrounds for different sections)
-	hl.LualineSectionA = { fg = c.bg, bg = c.green, bold = true }
-	hl.LualineSectionB = { fg = c.fg, bg = c.bg_highlight }
-	hl.LualineSectionC = { fg = c.fg_dark, bg = c.bg }
-	hl.LualineSectionX = { fg = c.fg_dark, bg = c.bg }
-	hl.LualineSectionY = { fg = c.fg, bg = c.bg_highlight }
-	hl.LualineSectionZ = { fg = c.bg, bg = c.green, bold = true }
+	-- Section B/C background and foreground (from spec)
+	local section_bc_bg = "#26282B"
+	local section_bc_fg = "#E6E9EA"
+
+	-- Mode-specific colors (spec section 9: mode chips)
+	hl.LualineNormalMode = { fg = mode_fg, bg = c.warm, bold = true } -- Warm accent for normal
+	hl.LualineInsertMode = { fg = mode_fg, bg = c.cyan, bold = true } -- Cyan for insert
+	hl.LualineVisualMode = { fg = mode_fg, bg = c.purple, bold = true } -- Purple for visual
+	hl.LualineReplaceMode = { fg = mode_fg, bg = c.red, bold = true } -- Red for replace
+	hl.LualineCommandMode = { fg = mode_fg, bg = c.green, bold = true } -- Green for command
+	hl.LualineTerminalMode = { fg = mode_fg, bg = c.cyan, bold = true } -- Cyan for terminal
+
+	-- Section backgrounds
+	hl.LualineSectionA = { fg = mode_fg, bg = c.warm, bold = true } -- Mode indicator
+	hl.LualineSectionB = { fg = section_bc_fg, bg = section_bc_bg } -- Filename, diagnostics
+	hl.LualineSectionC = { fg = c.fg_ui, bg = c.bg_darker } -- Inactive sections
+	hl.LualineSectionX = { fg = c.fg_ui, bg = c.bg_darker } -- Inactive sections
+	hl.LualineSectionY = { fg = section_bc_fg, bg = section_bc_bg } -- Git, filetype
+	hl.LualineSectionZ = { fg = mode_fg, bg = c.warm, bold = true } -- Position info
 
 	-- Inactive statusline (dimmed)
 	hl.LualineInactiveNormal = { fg = c.fg_ghost, bg = c.bg }
@@ -35,10 +41,10 @@ function M.get(c, config)
 	hl.LualineEncoding = { fg = c.fg_dark, bg = c.bg_highlight }
 
 	-- Git status (colored indicators)
-	hl.LualineGitBranch = { fg = c.bg, bg = c.green, bold = true }
-	hl.LualineGitAdded = { fg = c.git_add, bg = c.bg_highlight }
-	hl.LualineGitChanged = { fg = c.git_change, bg = c.bg_highlight }
-	hl.LualineGitDeleted = { fg = c.git_delete, bg = c.bg_highlight }
+	hl.LualineGitBranch = { fg = section_bc_fg, bg = section_bc_bg } -- In section B/Y
+	hl.LualineGitAdded = { fg = c.git_add, bg = section_bc_bg }
+	hl.LualineGitChanged = { fg = c.git_change, bg = section_bc_bg }
+	hl.LualineGitDeleted = { fg = c.git_delete, bg = section_bc_bg }
 
 	-- LSP and diagnostics
 	hl.LualineDiagnosticError = { fg = c.error, bg = c.bg_highlight }

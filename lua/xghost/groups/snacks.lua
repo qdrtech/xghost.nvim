@@ -15,32 +15,34 @@ function M.get(c, config)
 	hl.SnacksPickerSelected = { fg = c.fg, bg = c.bg_visual, bold = true }
 	hl.SnacksPickerCurrent = { bg = c.bg_highlight }
 
-	-- Snacks Explorer (File tree)
-	hl.SnacksExplorerNormal = { fg = c.fg, bg = bg }
+	-- Snacks Explorer (File tree) - spec section 8
+	hl.SnacksExplorerNormal = { fg = "#D2D7D6", bg = bg } -- Default text from spec
 	hl.SnacksExplorerBorder = { fg = c.border, bg = bg }
-	hl.SnacksExplorerTitle = { fg = c.blue, bg = bg, bold = true }
+	hl.SnacksExplorerTitle = { fg = c.warm, bg = bg, bold = true } -- Warm accent for titles
 
-	-- File/folder items
-	hl.SnacksExplorerDir = { fg = c.blue }
-	hl.SnacksExplorerFile = { fg = c.fg }
-	hl.SnacksExplorerHidden = { fg = c.fg_dark }
+	-- File/folder items (spec section 8)
+	hl.SnacksExplorerDir = { fg = c.warm, bold = true } -- Open folder: warm, semibold
+	hl.SnacksExplorerDirClosed = { fg = "#CFB08A" } -- Closed folder: dimmer warm
+	hl.SnacksExplorerFile = { fg = "#D2D7D6" } -- Regular files
+	hl.SnacksExplorerHidden = { fg = c.fg_dim } -- Muted (dotfiles, ignored)
 	hl.SnacksExplorerSymlink = { fg = c.cyan }
 	hl.SnacksExplorerExecutable = { fg = c.green }
 
-	-- Git status in explorer
-	hl.SnacksExplorerGitAdd = { fg = c.git_add }
-	hl.SnacksExplorerGitChange = { fg = c.git_change }
-	hl.SnacksExplorerGitDelete = { fg = c.git_delete }
-	hl.SnacksExplorerGitIgnored = { fg = c.fg_ghost }
-	hl.SnacksExplorerGitUntracked = { fg = c.fg_ghost }
+	-- Git decorations in tree (spec section 8)
+	hl.SnacksExplorerGitAdd = { fg = c.green } -- Added: accent.green
+	hl.SnacksExplorerGitChange = { fg = c.blue } -- Modified: accent.blue
+	hl.SnacksExplorerGitDelete = { fg = c.red } -- Removed: accent.red
+	hl.SnacksExplorerGitIgnored = { fg = c.fg_dim }
+	hl.SnacksExplorerGitUntracked = { fg = "#B3C2A1" } -- Untracked: from spec
 
 	-- Icons and indent markers
 	hl.SnacksExplorerIcon = { fg = c.fg_dark }
 	hl.SnacksExplorerIndent = { fg = c.fg_ghost }
 
-	-- Selection and cursor
-	hl.SnacksExplorerCursor = { bg = c.bg_highlight }
-	hl.SnacksExplorerSelected = { fg = c.fg, bg = c.bg_visual, bold = true }
+	-- Selection and cursor (spec section 8: selection with left bar accent.cyan)
+	hl.SnacksExplorerCursor = { bg = "#34373B" } -- Selection row bg from spec
+	hl.SnacksExplorerSelected = { fg = c.fg, bg = "#34373B" } -- Keep text normal, bg selection
+	hl.SnacksExplorerSelectedBar = { fg = c.cyan } -- Left bar in cyan (2px)
 
 	-- Snacks Dashboard
 	hl.SnacksDashboardNormal = { fg = c.fg, bg = config.transparent and c.none or c.bg }
